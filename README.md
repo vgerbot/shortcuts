@@ -1,6 +1,21 @@
 # shortcut-pattern-matching
 shortcut key pattern matching
 
+## Install
+
+```sh
+$ npm install shortcutpm --save
+$ # or 
+$ yarn add shortcutpm
+```
+
+Then import/require the module:
+
+```js
+const { match } = require('shortcutpm');
+import {match} from 'shortcutpm';
+```
+
 ## Usage
 
 #### Basic
