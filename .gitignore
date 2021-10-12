@@ -102,3 +102,12 @@ dist
 
 # TernJS port file
 .tern-port
+
+.vscode
+/docs
+/temp
+/test/dist
+/.rpt2_cache
+package-lock.json
+pnpm-lock.json
+yarn.lock
