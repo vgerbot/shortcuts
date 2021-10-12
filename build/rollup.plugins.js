@@ -4,7 +4,7 @@ const nodeBuiltins = require('rollup-plugin-node-builtins');
 const commonjs = require('@rollup/plugin-commonjs');
 const strip = require('@rollup/plugin-strip');
 const json = require('@rollup/plugin-json');
-const uglify = require('rollup-plugin-uglify');
+const terser = require('rollup-plugin-terser');
 
 function ext(opt1, opt2) {
     if(opt2 && opt1) {
@@ -48,11 +48,9 @@ module.exports = {
     commonjs(opt){
         return commonjs(ext({
             include: ['node_modules/**'],
-            // namedExports: {
-            // }
         }, opt));
     },
-    uglify(opt) {
-        return uglify(ext({}, opt));
+    terser(opt) {
+        return terser(ext({}, opt));
     }
 };
