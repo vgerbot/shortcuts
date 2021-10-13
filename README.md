@@ -116,21 +116,29 @@ The hook takes care of all the binding and unbinding for you. As soon as the com
 ### Vue.js directive
 
 ```vue
-import shortcutpm_vue from 'shortcutpm/vue';
-Vue.use(shortcutpm_vue);
-<my-component v-shortcut="'ctrl+Alt+O'" @shortcut.native="doTheAction()">
+<template>
+    <my-component  @shortcut="{'ctrl+alt+o': doTheAction}">
+</template>
+<script>
+    import shortcutpm_vue from 'shortcutpm/vue';
+    Vue.use(shortcutpm_vue);
+<script>
 ```
 
 You can define all shortcut key mapping in the global method.
 
 ```vue
-import shortcutpm_vue from 'shortcutpm/vue';
-Vue.use(shortcutpm_vue, {
-    keymap: {
-        'action1': 'ctrl+alt+o'
-    }
-});
-<my-component v-shortcut="'action1'" @shortcut.native="doTheAction()">
+<template>
+    <my-component @shortcut="{'action1':doTheAction}">
+</template>
+<script>
+    import shortcutpm_vue from 'shortcutpm/vue';
+    Vue.use(shortcutpm_vue, {
+        keymap: {
+            'action1': 'ctrl+alt+o'
+        }
+    });
+</script>
 ```
 
 ### Angular directive
