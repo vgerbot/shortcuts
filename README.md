@@ -1,5 +1,4 @@
-# shortcut-pattern-matching
-shortcut key pattern matching
+# shortcuts
 
 ## Install
 
@@ -18,7 +17,7 @@ import {match} from 'shortcutpm';
 
 ## Usage
 
-#### Basic
+#### Pattern matching
 
 ```js
 import {match} from 'shortcutpm';
@@ -83,4 +82,16 @@ document.body.addEventListener('keydown', e => {
   matcher(e);
 })
 ```
+
+### Rxjs operator
+
+```js
+import { shortcut } from 'shortcutpm/rxjs';
+import { fromEvent } from 'rxjs';
+
+fromEvent(document.body, 'keydown')
+.pipe(shortcut('Ctrl+A'))
+.subscribe(e => console.log('Ctrl+A'))
+```
+
 
