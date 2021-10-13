@@ -143,7 +143,7 @@ fallback(root, 'baz')('bar') // fallback shortcut events from baz to bar
 fallback(root, 'bar')('foo') // fallback shortcut events from bar to foo
 ```
 
-If a shortcut key event listener it not found in current activated context, by default, the `shortcuts` will look for same shortcut key in root context, but if you specified a fallback context, the `shortcts` will look for that *fallback context* first.
+If a shortcut key event listener is not found in current activated context, by default, the `shortcuts` will look for same shortcut key in root context, but if you specified a fallback context, the `shortcts` will look for that *fallback context* first.
 
 ```js
 root.activate('baz');
@@ -190,24 +190,51 @@ The hook takes care of all the binding and unbinding for you. As soon as the com
     <my-component  @shortcut="{'ctrl+alt+o': doTheAction}">
 </template>
 <script>
-    import shortcuts_vue from '@shortcuts/vue';
-    Vue.use(shortcuts_vue);
+    import shortcuts from '@shortcuts/vue';
+    Vue.use(shortcuts);
 <script>
 ```
 
-You can define all shortcut key mapping in the global method.
+You can define all shortcut key mappings in the global method.
+
+```vue
+<template>
+    <my-component @shortcut="{'context1.action1': doTheAction}">
+</template>
+<script>
+    import shortcuts from '@shortcuts/vue';
+    Vue.use(shortcuts);
+    Vue.keymap({
+        'context1.action1': 'Ctrl+Alt+O', // context1
+        'action2': 'Ctrl+K' // root context
+    });
+</script>
+```
+
+Shortcut key map can be rewrote dynamically
 
 ```vue
 <template>
     <my-component @shortcut="{'action1': doTheAction}">
 </template>
 <script>
-    import shortcuts_vue from '@shortcuts/vue';
-    Vue.use(shortcuts_vue, {
-        keymap: {
-            'action1': 'ctrl+alt+o'
-        }
+    import shortcuts from '@shortcuts/vue';
+    Vue.use(shortcuts);
+    Vue.keymap({
+        'context1.action1': 'Ctrl+Alt+O'
     });
+    export default {
+        methods:{
+            doTheAction() {
+                //
+            }
+        },
+        async mounted() {
+            const resp = await fetch('/user-customize-keymap');
+            const keymap = await resp.json();
+            Vue.keymap(keymap);
+        }
+    }
 </script>
 ```
 
