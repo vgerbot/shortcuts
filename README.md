@@ -94,4 +94,23 @@ fromEvent(document.body, 'keydown')
 .subscribe(e => console.log('Ctrl+A'))
 ```
 
+### React hook
+
+```jsx
+import { useShortcut } from 'shortcutpm/react';
+
+export const ExampleComponent = () => {
+    const [count, setCount] = useState(0);
+    useShortcut('Ctrl+K', () => {
+        setCount(prev => prev + 1)
+    })
+    return (
+        <span>Pressed {count} times</span>
+    );
+}
+
+```
+
+The hook takes care of all the binding and unbinding for you. As soon as the component mounts into the DOM, the key stroke will be listened to.When the component unmounts, it will stop listening.
+
 
