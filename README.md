@@ -113,4 +113,24 @@ export const ExampleComponent = () => {
 
 The hook takes care of all the binding and unbinding for you. As soon as the component mounts into the DOM, the key stroke will be listened to.When the component unmounts, it will stop listening.
 
+### Vue.js directive
 
+```vue
+import shortcutpm_vue from 'shortcutpm/vue';
+Vue.use(shortcutpm_vue);
+<my-component v-shortcut="'ctrl+Alt+O'" @shortcut.native="doTheAction()">
+```
+
+You can define all shortcut key mapping in the global method.
+
+```vue
+import shortcutpm_vue from 'shortcutpm/vue';
+Vue.use(shortcutpm_vue, {
+    keymap: {
+        'action1': 'ctrl+alt+o'
+    }
+});
+<my-component v-shortcut="'action1'" @shortcut.native="doTheAction()">
+```
+
+### Angular directive
