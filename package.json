@@ -13,14 +13,10 @@
     "dependencies": {
         "rollup-plugin-terser": "^7.0.2"
     },
-    "husky": {
-        "hooks": {
-            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-            "pre-commit": "lint-staged"
-        }
-    },
     "scripts": {
-        "commit": "commit"
+        "postinstall": "husky install",
+        "commit": "commit",
+        "lint": ""
     },
     "repository": {
         "type": "git",
