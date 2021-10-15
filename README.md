@@ -123,24 +123,23 @@ import { fallback, context } from '@shortcuts/core';
 const root = context();
 
 // Setup handlers for context
-root.setup('foo', ctx => {
-    ctx.keydown('Ctrl+A', (shortcutEvent) => {
-        console.log(`[foo] Ctrl+A`);
-    });
+const foo_ctx = context(root, 'foo');
+foo_ctx.keydown('Ctrl+A', (shortcutEvent) => {
+    console.log(`[foo] Ctrl+A`);
 });
-root.setup('bar', ctx => {
-    ctx.keydown('Ctrl+B', (shortcutEvent) => {
-        console.log(`[bar] Ctrl+B`);
-    });
+const bar_ctx = context(root, 'bar');
+bar_ctx.keydown('Ctrl+B', (shortcutEvent) => {
+    console.log(`[bar] Ctrl+B`);
 });
-root.setup('baz', ctx => {
-    ctx.keydown('Ctrl+C', (shortcutEvent) => {
-        console.log(`[baz] Ctrl+C`);
-    });
+const baz_ctx = context(root, 'baz');
+baz_ctx.keydown('Ctrl+C', (shortcutEvent) => {
+    console.log(`[baz] Ctrl+C`);
 });
 
 fallback(root, 'baz')('bar') // fallback shortcut events from baz to bar
 fallback(root, 'bar')('foo') // fallback shortcut events from bar to foo
+// This is equivalent to:
+fallback(root, 'baz')('bar')('foo')
 ```
 
 If a shortcut key event listener is not found in current activated context, by default, the `shortcuts` will look for same shortcut key in root context, but if you specified a fallback context, the `shortcts` will look for that *fallback context* first.
@@ -150,6 +149,22 @@ root.activate('baz');
 // User pressed Ctrl+A
 // Console outputs: [foo] Ctrl+A
 ```
+
+#### pressKey, releaseKey, releaseAllKeys
+
+```js
+const ctx = context(root, 'bar');
+
+ctx.pressKey('context-name', 'a') // press key by name
+ctx.pressKey('context-name', 65) // press key by code
+
+ctx.releaseKey('context-name', 'a') // release by key name
+ctx.releaseKey('context-name', 65) // release by key code
+
+ctx.releaseAllKeys()
+```
+
+### shortcut macros
 
 ### Integration with thirdparty framework/library
 
