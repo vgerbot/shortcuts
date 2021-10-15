@@ -123,15 +123,16 @@ import { fallback, context } from '@shortcuts/core';
 const root = context();
 
 // Setup handlers for context
-const foo_ctx = context(root, 'foo');
-foo_ctx.keydown('Ctrl+A', (shortcutEvent) => {
-    console.log(`[foo] Ctrl+A`);
+root.with('foo', ctx => {
+    ctx.keydown('Ctrl+A', (shortcutEvent) => {
+        console.log(`[foo] Ctrl+A`);
+    });
 });
-const bar_ctx = context(root, 'bar');
+const bar_ctx = await root.with('bar');
 bar_ctx.keydown('Ctrl+B', (shortcutEvent) => {
     console.log(`[bar] Ctrl+B`);
 });
-const baz_ctx = context(root, 'baz');
+const baz_ctx = await context(root, 'baz'); // equivalent to: await root.with('baz')
 baz_ctx.keydown('Ctrl+C', (shortcutEvent) => {
     console.log(`[baz] Ctrl+C`);
 });
@@ -140,9 +141,11 @@ fallback(root, 'baz')('bar') // fallback shortcut events from baz to bar
 fallback(root, 'bar')('foo') // fallback shortcut events from bar to foo
 // This is equivalent to:
 fallback(root, 'baz')('bar')('foo')
+// and 
+fallback(root, 'baz','bar','foo');
 ```
 
-If a shortcut key event listener is not found in current activated context, by default, the `shortcuts` will look for same shortcut key in root context, but if you specified a fallback context, the `shortcts` will look for that *fallback context* first.
+If a shortcut key event listener is not found in current activated context, by default, the `shortcuts` will look for same shortcut key in root context, but if some context has been specified a fallback context, the `shortcuts` will look for that *fallback context* first.
 
 ```js
 root.activate('baz');
@@ -218,10 +221,21 @@ You can define all shortcut key mappings in the global method.
 </template>
 <script>
     import shortcuts from '@shortcuts/vue';
-    Vue.use(shortcuts);
-    Vue.keymap({
-        'context1.action1': 'Ctrl+Alt+O', // context1
-        'action2': 'Ctrl+K' // root context
+    import { context } from '@shortcut/core';
+    const root = context();
+    Vue.use(shortcuts, {
+        root,
+        keymap: {
+            'context1.action1': 'Ctrl+Alt+O', // context1
+            'context2.action1': 'Ctrl+Alt+K', // context2
+            'context3.action1': 'Ctrl+Alt+F', // context3
+            'context4.action1': 'Ctrl+Alt+H', // context4
+            'action2': 'Ctrl+K' // root context
+        },
+        fallbacks: [
+            ['context1', 'context2'],
+            ['context3', 'context4']
+        ]
     });
 </script>
 ```
@@ -234,9 +248,21 @@ Shortcut key map can be rewrote dynamically
 </template>
 <script>
     import shortcuts from '@shortcuts/vue';
-    Vue.use(shortcuts);
-    Vue.keymap({
-        'context1.action1': 'Ctrl+Alt+O'
+    import { context } from '@shortcut/core';
+    const root = context();
+    Vue.use(shortcuts, {
+        root,
+        keymap: {
+            'context1.action1': 'Ctrl+Alt+O', // context1
+            'context2.action1': 'Ctrl+Alt+K', // context2
+            'context3.action1': 'Ctrl+Alt+F', // context3
+            'context4.action1': 'Ctrl+Alt+H', // context4
+            'action2': 'Ctrl+K' // root context
+        },
+        fallbacks: [
+            ['context1', 'context2'],
+            ['context3', 'context4']
+        ]
     });
     export default {
         methods:{
